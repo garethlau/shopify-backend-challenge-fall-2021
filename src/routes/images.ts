@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import ImageModel from '../mongo/models/Image';
-import { putObject, removeObjects, removeObject } from '../s3/helper';
+import { putObject, removeObjects } from '../s3/helper';
 import multer from 'multer';
 import sharp from 'sharp';
 import { S3_BUCKET_NAME } from '../config';
@@ -71,22 +71,22 @@ router.post('/', upload.single('image'), async (req, res) => {
   const promises = sizes.map(
     ([width, height]) =>
       new Promise(async (resolve, reject) => {
-        try {
-          // resize the image
-          const resizedBuffer = await sharp(file.buffer)
-            .jpeg({ quality: 80 })
-            .resize(width, height)
-            .toBuffer();
+        // resize the image
+        sharp(file.buffer)
+          .jpeg({ quality: 80 })
+          .resize(width, height)
+          .toBuffer()
+          .then((resizedBuffer) => {
+            // create file name
+            const filename = `${name}_${width}x${height}.jpg`;
 
-          // create file name
-          const filename = `${name}_${width}x${height}.jpg`;
-
-          // save the image
-          await putObject(S3_BUCKET_NAME, filename, resizedBuffer);
-          resolve(filename);
-        } catch (error) {
-          reject(error);
-        }
+            // save the image
+            putObject(S3_BUCKET_NAME, filename, resizedBuffer)
+              .then(() => {
+                resolve(filename);
+              })
+              .catch(reject);
+          });
       })
   );
 
