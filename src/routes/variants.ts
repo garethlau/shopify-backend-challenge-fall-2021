@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import ImageModel from '../mongo/models/Image';
-import { S3_BUCKET_NAME, S3_END_POINT } from '../config';
+import { S3_BUCKET_NAME } from '../config';
 import { removeObject, getObject, putObject } from '../s3/helper';
 import sharp from 'sharp';
 import { parseSizes } from '../utils/parser';
