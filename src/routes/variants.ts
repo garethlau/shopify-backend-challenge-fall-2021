@@ -55,7 +55,9 @@ router.post('/', async (req, res) => {
 
     // return updated image document
     return res.status(200).send({ image: updatedImage });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).send();
+  }
 });
 
 router.delete('/:variantName', async (req, res) => {
