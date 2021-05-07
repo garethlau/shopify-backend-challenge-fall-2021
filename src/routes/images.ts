@@ -128,6 +128,8 @@ router.patch('/:imageId', async (req, res) => {
 
   try {
     const image = await ImageModel.findById(imageId).exec();
+    // TODO - Update image properties
+    return res.status(200).send({ image });
   } catch (error) {
     return res.status(500).send();
   }
