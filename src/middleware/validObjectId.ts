@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
-function isValidObjectId(id: string) {
+function isValidObjectId(id: string): boolean {
   if (!Types.ObjectId.isValid(id)) {
     return false;
   }
