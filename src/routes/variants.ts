@@ -27,23 +27,23 @@ router.post('/', async (req, res) => {
     // create new sizes
     const promises: Promise<string>[] = sizes.map(
       ([width, height]) =>
-        new Promise(async (resolve, reject) => {
-          try {
-            // resize image
-            const resizedBuffer = await sharp(buffer)
-              .jpeg({ quality: 80 })
-              .resize(width, height)
-              .toBuffer();
+        new Promise((resolve, reject) => {
+          // resize image
+          sharp(buffer)
+            .jpeg({ quality: 80 })
+            .resize(width, height)
+            .toBuffer()
+            .then((resizedBuffer) => {
+              // create file name
+              const filename = `${name}_${width}x${height}.jpg`;
 
-            // create file name
-            const filename = `${name}_${width}x${height}.jpg`;
-
-            // save image
-            await putObject(S3_BUCKET_NAME, filename, resizedBuffer);
-            resolve(filename);
-          } catch (error) {
-            reject(error);
-          }
+              // save image
+              putObject(S3_BUCKET_NAME, filename, resizedBuffer)
+                .then(() => {
+                  resolve(filename);
+                })
+                .catch(reject);
+            });
         })
     );
 
