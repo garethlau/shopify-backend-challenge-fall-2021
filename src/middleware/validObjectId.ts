@@ -21,7 +21,7 @@ const validObjectId = (paramName: string) => (
 
   const id = req.params[paramName];
   if (isValidObjectId(id)) {
-    next();
+    return next();
   }
   return res.status(400).send();
 };
