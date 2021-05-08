@@ -40,17 +40,18 @@ function putObject(
 function getObject(bucketName: string, objectName: string): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     s3Client.getObject(bucketName, objectName, (error, dataStream) => {
+      if (!dataStream) return reject('No data stream');
       const chunks: Uint8Array[] = [];
-      if (error) reject(error);
+      if (error) return reject(error);
       dataStream.on('data', (chunk) => {
         chunks.push(chunk);
       });
       dataStream.on('end', () => {
         const buffer = Buffer.concat(chunks);
-        resolve(buffer);
+        return resolve(buffer);
       });
       dataStream.on('error', (error) => {
-        reject(error);
+        return reject(error);
       });
     });
   });
