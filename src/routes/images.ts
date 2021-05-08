@@ -129,6 +129,9 @@ router.delete('/:imageId', async (req, res, next) => {
   const { imageId } = req.params;
   try {
     const image = await ImageModel.findById(imageId).exec();
+    if (!image) {
+      return res.status(404).send({ message: 'Image does not exist.' });
+    }
 
     // remove images from s3
     const objectsList = [...image.variants, image.src];
@@ -168,6 +171,11 @@ router.patch('/:imageId', validObjectId('imageId'), async (req, res, next) => {
         new: true
       }
     ).exec();
+    if (!updatedImage) {
+      return res
+        .status(404)
+        .send({ message: 'Could not update image because it does not exist.' });
+    }
     return res.status(200).send({ image: updatedImage });
   } catch (error) {
     return next(error);
