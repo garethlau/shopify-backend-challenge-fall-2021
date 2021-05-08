@@ -3,6 +3,9 @@ import cors from 'cors';
 
 import morgan from 'morgan';
 import routes from './routes';
+import errorHandler from './middleware/errorHandler';
+import logErrors from './middleware/logErrors';
+
 const whitelist = ['http://localhost:3000'];
 const app = express();
 
@@ -24,5 +27,7 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', routes);
+app.use(logErrors);
+app.use(errorHandler);
 
 export default app;
