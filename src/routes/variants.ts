@@ -19,6 +19,9 @@ router.post('/', async (req, res) => {
     // get existing image document
     const image = await ImageModel.findById(imageId).exec();
 
+    if (!image) {
+      return res.status(404).send({ message: 'Image does not exist.' });
+    }
     const [name] = image.src.split('.');
 
     // get the source image
@@ -64,6 +67,14 @@ router.delete('/:variantName', async (req, res) => {
   const { imageId, variantName } = req.params;
   try {
     const image = await ImageModel.findById(imageId).exec();
+    if (!image) {
+      return res.status(404).send({ message: 'Image does not exist.' });
+    }
+
+    // check that the variant name exists
+    if (!image.variants.includes(variantName)) {
+      return res.status(404).send({ message: 'Variant does not exist.' });
+    }
 
     await removeObject(S3_BUCKET_NAME, variantName);
 
