@@ -45,18 +45,18 @@ Query Parameters
 
 - `search`: `String`
   - optional
-  - Comma seperated list of tags to filter images by. If no tags are provided, all images will be fetched and returned.
+  - Comma separated list of tags to filter images by. If no tags are provided, all images will be fetched and returned.
 
 Responses
 
 - 200
 
-  - Successfully retreived images
+  - Successfully retrieved images
   - body:
     - `images`: `Image[]`
 
 - 500
-  - Unknown error occured
+  - Unknown error occurred
 
 ### `GET /api/images/:imageId`
 
@@ -71,7 +71,7 @@ Route Parameters
 Responses
 
 - 200
-  - Successfully retreived image
+  - Successfully retrieved image
   - body:
     - `image`: `Image`
 - 404
@@ -79,7 +79,7 @@ Responses
   - body:
     - `message`: `String`
 - 500
-  - Unknown error occured
+  - Unknown error occurred
 
 ### `POST /api/images`
 
@@ -119,7 +119,7 @@ Responses
   - body:
     - `message`: `String`
 - 500
-  - Unknown error occured
+  - Unknown error occurred
 
 ### `DELETE /api/images/:imageId`
 
@@ -142,7 +142,7 @@ Responses
   - body:
     - `message`: `String`
 - 500
-  - Unknown error occured
+  - Unknown error occurred
 
 ### `PATCH /api/images/:imageId`
 
@@ -158,7 +158,7 @@ Body Parameters
 
 - `tags`: `String`
   - optional
-  - Comma seperated list of tags to overwrite existing tags. Not providing a value or providing an empty string will not overwrite the existing tags.
+  - Comma separated list of tags to overwrite existing tags. Not providing a value or providing an empty string will not overwrite the existing tags.
 
 Responses
 
@@ -171,7 +171,7 @@ Responses
   - body:
     - `message`: `String`
 - 500
-  - Unknown error occured
+  - Unknown error occurred
 
 ### `POST /api/images/:imageId/variants`
 
@@ -185,7 +185,7 @@ Body Parameters
 
 - `sizes`: `String`
   - **required**
-  - Comma seperated string of sizes to generate variants from.
+  - Comma separated string of sizes to generate variants from.
 
 Responses
 
@@ -198,7 +198,7 @@ Responses
 - 404
   - The image does not exist. Variants were not created.
 - 500
-  - Unknown error occured.
+  - Unknown error occurred.
 
 ### `DELETE /api/images/:imageId/variants/:variantName`
 
@@ -220,4 +220,4 @@ Responses
   - body:
     - `message`: `String`
 - 500
-  - Uknown error occured.
+  - Unknown error occurred.
