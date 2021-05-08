@@ -58,6 +58,7 @@ router.get('/:imageId', validObjectId('imageId'), async (req, res, next) => {
 // Upload new images
 router.post('/', upload.single('image'), async (req, res, next) => {
   const file = req.file;
+  const skipCopy: boolean = req.body.skipCopy;
 
   let sizes: number[][];
   try {
@@ -70,10 +71,13 @@ router.post('/', upload.single('image'), async (req, res, next) => {
   const [name] = file.originalname.split('.');
 
   try {
+    // regardless of skipCopy, attempt to calculate the dimensions of the image to ensure image format
     const { width: originalWidth, height: originalHeight } = sizeOf(
       file.buffer
     );
-    sizes.push([originalWidth, originalHeight]);
+    if (!skipCopy) {
+      sizes.push([originalWidth, originalHeight]);
+    }
   } catch (error) {
     return res.status(415).send({ message: error });
   }
