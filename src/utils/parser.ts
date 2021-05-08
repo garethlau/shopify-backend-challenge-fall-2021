@@ -22,11 +22,12 @@ function parseSizes(req: Request): number[][] {
 }
 
 function parseTags(req: Request): string[] {
-  if (!req.body.tags) {
+  const rawTags: string = req.body.tags;
+  if (!rawTags || rawTags === ' ') {
     return [];
   }
 
-  const tags: string[] = req.body.tags.split(',');
+  const tags: string[] = rawTags.split(',').filter((tag) => tag && tag !== ' ');
   return tags;
 }
 
