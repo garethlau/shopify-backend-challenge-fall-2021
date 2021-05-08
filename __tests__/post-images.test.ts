@@ -10,6 +10,19 @@ describe('Upload an image', () => {
     await initDb();
   });
 
+  test('override default behaviour of generating .jpg copy', (done) => {
+    request(app)
+      .post(BASE_URL)
+      .field('skipCopy', true)
+      .attach('image', TEST_IMAGE_PATH)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body.image.variants.length).toEqual(0);
+        return done();
+      });
+  });
+
   test('without creating variants', (done) => {
     request(app)
       .post(BASE_URL)
