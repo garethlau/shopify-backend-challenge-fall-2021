@@ -1,13 +1,39 @@
 # Image Repo
 
-This is my submission for Shopify's fall 2021 backend developer internship.
+This is my submission for Shopify's fall 2021 backend developer internship. This is an Express server written in TypeScript. It uses MongoDB and Minio as its document storage and object storage solutions respectively.
 
-## Setup
+## Overview
 
-This project uses docker compose to start a local database (mongo) and object store (minio). See `docker-compopse.yml` and `docker-compose.dev.yml`.  
-To run this project locally, use the `yarn dev` command. This will start the mongo and minio service as well as the express server.
+The goal of this project was to create an easy-to-use API to upload images and create optimized image sizes for different views. For example, a blog post might require a thumbnail (200x200), image for a card (600x400), banner (1080x400), and images for social media sharing (1200x600).
 
-The express server can be accessed at `http://localhost:5000`
+This API includes:
+
+- uploading images
+- creating variants of an image (variants in this context refer to width-height combinations of a source image)
+- searching for images based on tags
+- deleting images
+- updating image tags
+- deleting image variants
+
+In the future I'd like to:
+
+- create a UI to create, update, and delete images
+- use image recognition models or APIs to automatically generate tags
+- create optimized image formats like `.webp`
+- implement user accounts and presets for sizes, file types, and quality
+
+## Local Setup
+
+This project uses docker compose to start a local database (mongo) and object store (minio). See `docker-compose.yml` and `docker-compose.dev.yml`. `docker-compose` does not need to be executed explicitly as they are included in the [dev script.](/scripts/dev.sh).
+
+To start the server:
+
+1. `yarn install`
+2. `yarn dev`
+
+The express server can be accessed at `http://localhost:5000`. The `minio` interface is accessible at `http://localhost:9000/minio`
+
+Run tests with `yarn test`. **Please ensure that the local development server is running (`yarn dev`).**
 
 ## Endpoints
 
@@ -49,7 +75,7 @@ Responses
   - body:
     - `image`: `Image`
 - 404
-  - Request image does not exist
+  - Requested image does not exist
   - body:
     - `message`: `String`
 - 500
@@ -57,7 +83,7 @@ Responses
 
 ### `POST /api/images`
 
-Upload an image and create variants for the provided `sizes`. By default, a `.jpg` version of the source image will also be created as a variant at the intrinsic width and size. This behaviour can be prevented by supplying a `skipCopy: true` in the body.
+Upload an image and create variants for the provided `sizes`. By default, a `.jpg` version of the source image will also be created as a variant with the intrinsic width and size. This behaviour can be prevented by supplying a `skipCopy: true` in the body.
 
 Body
 
@@ -66,16 +92,16 @@ Body
   - Image to upload
 - `sizes`: `String`
   - optional
-  - Comma seperated image sizes to generate of the source image.
+  - Comma separated image sizes to generate of the source image.
   - Example: `300x300,100x100`
 - `tags`: `String`
   - optional
-  - Comma seperated labels to apply to the image.
+  - Comma separated labels to apply to the image.
   - Example: `leslie knope,parks and recreation,sitcom`
 - `skipCopy`: `Boolean`
   - optional
   - defaults to `false`
-  - Set to `true` to disable the default behaviour of creating a `.jpg` of the source image at the intrinsic width and height.
+  - Set to `true` to disable the default behaviour of creating a `.jpg` of the source image with the intrinsic width and height.
 
 Responses
 
