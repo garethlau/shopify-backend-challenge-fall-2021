@@ -1,4 +1,4 @@
-# Image Repo
+# Shopify Frontend Challenge - Fall 2021
 
 This is my submission for Shopify's fall 2021 backend developer internship. This is an Express server written in TypeScript. It uses MongoDB and Minio as its document storage and object storage solutions respectively.
 
